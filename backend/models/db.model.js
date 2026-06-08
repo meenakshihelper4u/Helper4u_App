@@ -40,6 +40,7 @@ async function checkDatabaseConnection() {
 
 module.exports = {
   db,
+  knex: db,
   checkDatabaseConnection,
   getMissingDbVars,
 };

@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 
 const databaseRoutes = require("./routes/database");
+const loginRoutes = require("./routes/Logincheck");
 const { notFound, errorHandler } = require("./middleware");
 
 const app = express();
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 });
 
 databaseRoutes.routes(app);
+loginRoutes.routes(app);
 
 app.use(notFound);
 app.use(errorHandler);
