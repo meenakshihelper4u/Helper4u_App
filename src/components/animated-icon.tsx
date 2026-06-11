@@ -4,11 +4,14 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import Animated, { Easing, Keyframe } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
+import { useTheme } from '@/hooks/use-theme';
+
 const INITIAL_SCALE_FACTOR = Dimensions.get('screen').height / 90;
 const DURATION = 600;
 
 export function AnimatedSplashOverlay() {
   const [visible, setVisible] = useState(true);
+  const theme = useTheme();
 
   if (!visible) return null;
 
@@ -39,8 +42,14 @@ export function AnimatedSplashOverlay() {
           scheduleOnRN(setVisible, false);
         }
       })}
-      style={styles.backgroundSolidColor}
-    />
+      style={[
+        styles.backgroundSolidColor,
+        { backgroundColor: theme.background },
+      ]}>
+      <View style={styles.overlayContent}>
+        <Image source={require('@/Images/h4u_logo.jpg')} style={styles.splashLogo} contentFit="contain" />
+      </View>
+    </Animated.View>
   );
 }
 
@@ -126,7 +135,16 @@ const styles = StyleSheet.create({
   },
   backgroundSolidColor: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: '#208AEF',
     zIndex: 1000,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  overlayContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  splashLogo: {
+    width: 160,
+    height: 160,
   },
 });
