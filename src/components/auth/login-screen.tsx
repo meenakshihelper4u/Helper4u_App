@@ -48,8 +48,6 @@ export function LoginScreen() {
       };
 
   const { t, language } = useLocalization();
-  const localization = useLocalization();
-  console.log("Localization:", localization);
 
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
