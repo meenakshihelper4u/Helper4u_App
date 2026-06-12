@@ -1,10 +1,9 @@
-const {
-  db,
-} = require("../../models/db.model");
+const { db } = require("../../models/db.model");
 
 async function LoginCheck(req, res, next) {
-   try {
-    const { phone } = req.body;
+  try {
+    const { phone, language } = req.body;
+    console.log("LoginCheck Request Body:", phone, "and looking", language);
 
     if (!phone) {
       return res.status(400).json({
@@ -14,14 +13,15 @@ async function LoginCheck(req, res, next) {
     }
 
     const user = await db("personal_details")
-      .select(
-        "personal_id",
-        "mobile_no",
-        "action_performed",
-        "fullname"
-      )
+      .select("personal_id", "mobile_no", "action_performed", "fullname")
       .where("mobile_no", phone)
       .first();
+
+    if (user && language) {
+      await db("personal_details")
+        .where("mobile_no", phone)
+        .update({ language_preferred: language });
+    }
 
     // Number not found
     if (!user) {
@@ -29,8 +29,7 @@ async function LoginCheck(req, res, next) {
         success: false,
         allowLogin: false,
         popup: true,
-        message:
-          "Please message on 0000000000 number",
+        message: "Please message on 0000000000 number",
       });
     }
 
@@ -53,8 +52,7 @@ async function LoginCheck(req, res, next) {
       allowLogin: false,
       popup: true,
       status: user.action_performed,
-      message:
-        "Please message on 0000000000 number",
+      message: "Please message on 0000000000 number",
     });
   } catch (error) {
     console.error("Seeker Login Error:", error);

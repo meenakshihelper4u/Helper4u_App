@@ -47,7 +47,10 @@ export function LoginScreen() {
         input: "#f7fafc",
       };
 
-  const { t } = useLocalization();
+  const { t, language } = useLocalization();
+  const localization = useLocalization();
+  console.log("Localization:", localization);
+
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -69,7 +72,7 @@ export function LoginScreen() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ phone: trimmedPhone }),
+        body: JSON.stringify({ phone: trimmedPhone, language: language }),
       });
 
       const data = await response.json();
